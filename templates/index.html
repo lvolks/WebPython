@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Trelle</title>
+</head>
+<body>
+<h4>Olá {{ user.username }}</h4>
+    <div>
+        {% if tasks %}
+            <ul>
+                {% for task in tasks %}
+                    <li>
+                    <strong>{{ task.title }}</strong>
+                    {{ task.user.username }}
+                    </li>
+
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h2>Nenhuma task criada!</h2>
+        {% endif %}
+    </div>
+</body>
+</html>

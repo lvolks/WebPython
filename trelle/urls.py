@@ -18,11 +18,14 @@ from django.contrib import admin
 from django.urls import path
 
 import auth.views
-from auth import views
+import boards.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # auth
     path('login/',auth.views.login),
     path('register/',auth.views.register),
+
+    # boards
+    path('',boards.views.index)
 ]
