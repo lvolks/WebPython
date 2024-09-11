@@ -27,5 +27,6 @@ urlpatterns = [
     path('register/',auth.views.register),
 
     # boards
-    path('',boards.views.index)
+    path('',boards.views.index),
+    path('tasks/<int:task_id>', boards.views.task),
 ]

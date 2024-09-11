@@ -10,19 +10,64 @@
 <body>
 <h4>Olá {{ user.username }}</h4>
     <div>
-        {% if tasks %}
-            <ul>
-                {% for task in tasks %}
-                    <li>
-                    <strong>{{ task.title }}</strong>
-                    {{ task.user.username }}
-                    </li>
-
-                {% endfor %}
-            </ul>
-        {% else %}
-            <h2>Nenhuma task criada!</h2>
-        {% endif %}
+    <div style="display: flex; gap: 10px">
+        <div>
+            <h3>Pendentes</h3>
+            {% if pending %}
+                <ul>
+                    {% for task in pending %}
+                        <li>
+                            <a href="/tasks/{{ task.id }}">
+                                <strong>{{ task.title }}</strong>
+                                {{ task.user.username }}
+                            </a>
+                        </li>
+    
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <h3>Nenhuma task pendente!</h3>
+            {% endif %}
+        </div>
+    
+        <div>
+            <h3>Em andamento</h3>
+            {% if doing %}
+                <ul>
+                    {% for task in doing %}
+                        <li>
+                            <a href="/tasks/{{ task.id }}">
+                                <strong>{{ task.title }}</strong>
+                                {{ task.user.username }}
+                            </a>
+                        </li>
+    
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <h3>Nenhuma task em andamento!</h3>
+            {% endif %}
+        </div>
+    
+    <div>
+            <h3>Finalizadas</h3>
+            {% if done %}
+                <ul>
+                    {% for task in done %}
+                        <li>
+                            <a href="/tasks/{{ task.id }}">
+                                <strong>{{ task.title }}</strong>
+                                {{ task.user.username }}
+                            </a>
+                        </li>
+    
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <h3>Nenhuma task finalizada!</h3>
+            {% endif %}
+        </div>
+    </div>
     </div>
 </body>
 </html>

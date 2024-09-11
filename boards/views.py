@@ -14,7 +14,21 @@ def index(request):
 
     tasks = Task.objects.filter(user=request.user)
 
+    pending = tasks.filter(status='pending')
+    doing = tasks.filter(status='doing')
+    done = tasks.filter(status='done')
+
     return HttpResponse(template.render({
-        'tasks': tasks,
+        'pending': pending,
+        'doing': doing,
+        'done': done,
         'user': request.user,
     }, request))
+
+def task(request, task_id):
+    if not request.user.is_authenticated:
+        return redirect("/login")
+    print(task_id)
+
+    # TODO
+
