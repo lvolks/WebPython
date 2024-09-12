@@ -7,6 +7,8 @@ task_status_enum = {
     'done': 'Concluído'
 }
 
+
+
 class Task(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending'),

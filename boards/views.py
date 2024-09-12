@@ -4,7 +4,7 @@ from django.template import loader
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from boards.models import Task
+from boards.models import Task, task_status_enum
 from django.db.models import Q
 
 # Create your views here.
@@ -27,12 +27,25 @@ def index(request):
         'user': request.user,
     }, request))
 
+task_status_color = {
+    'pending': 'yellow',
+    'doing': 'blue',
+    'done': 'green'
+}
+
 def task(request, task_id):
     if not request.user.is_authenticated:
         return redirect("/login")
     try:
+
         task = Task.objects.get(id=task_id)
-        return render(request, 'details.html', {'task': task})
+        status = task_status_enum[task.status]
+        status_color = task_status_color[task.status]
+        return render(request, 'details.html', {
+            'task': task,
+            'status': status,
+            'status_color': status_color
+        })
     except Task.DoesNotExist:
         return HttpResponse("Task não encontrada", status=404)
 
@@ -113,7 +126,7 @@ def editTask(request, task_id):
             
             task.shared_with.set(shared_users)
             
-            return redirect("/")
+            return redirect("/tasks/" + str(task.id))
         except ValueError as ex:
             return HttpResponse(template.render({
                 'error_message': str(ex),
@@ -158,12 +171,3 @@ def deleteTask(request, task_id):
     except Exception as ex:
         print(f"Erro ao tentar deletar a task: {ex}")
         return HttpResponse("Ocorreu um erro ao deletar a task.")
-
-@login_required(login_url='/login')
-def details(request, task_id):
-    try:
-        task = Task.objects.get(id=task_id)
-        return render(request, 'details.html', {'task': task})
-    except Task.DoesNotExist:
-        return HttpResponse("Task não encontrada", status=404)
-

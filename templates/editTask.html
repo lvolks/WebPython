@@ -10,13 +10,19 @@
 </head>
 <body class="w-screen h-screen bg-zinc-900 text-white p-4 sm:flex sm:justify-center">
 
-    <div class="sm:w-4/5 xl:w-3/5">
-    <h1 class="text-4xl font-bold mt-12 mb-8">Editar tarefa</h1>
+    <div class="sm:w-4/5 xl:w-3/5 pt-12">
+    <a class="flex gap-1 mb-5" href="/">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+            <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"></path>
+        </svg>
+        <span>Voltar para home</span>
+    </a>
+    <h1 class="text-4xl font-bold mb-8">Editar tarefa</h1>
     <form class="border-2 border-zinc-600 rounded-xl p-4 flex flex-col" method="post">
         {% csrf_token %}
 
         {% if error_message %}
-            <p><strong>{{ error_message }}</strong></p>
+            <p><strong class="text-red-500">{{ error_message }}</strong></p>
         {% endif %}
 
         <label class="flex flex-col text-zinc-400 mb-4">
@@ -41,7 +47,7 @@
         <div class="flex flex-col">
             <label for="shared_with">Compartilhar com:</label>
             <div class="relative">
-                <select class="text-white bg-zinc-800 w-full overflow-y-auto overflow-x-hidden rounded-lg" id="shared_with" name="shared_with" multiple style="max-width: 100%; height: 8rem; display: block; padding: 0.5rem;">
+                <select class=" px-4 py-2 text-white bg-zinc-800 w-full overflow-y-auto overflow-x-hidden rounded-lg" id="shared_with" name="shared_with" style="max-width: 100%; display: block; ">
                     {% for user in users %}
                         <option class="px-2 py-2" value="{{ user.id }}">{{ user.username }}</option>
                     {% endfor %}
