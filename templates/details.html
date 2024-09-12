@@ -1,15 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Tarefa {{ task.id }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    {% csrf_token %}
-    <h1>Detalhes da Tarefa</h1>
-    <p><strong>Descrição:</strong> {{ task.description }}</p>
-    <p><strong>Criado por:</strong> {{ task.user.username }}</p>
-    <p><strong>Data de criação:</strong> {{ task.creation_date }}</p>
-    <a href="/">Voltar para lista de tarefas</a>
+
+<body class="w-screen h-screen bg-zinc-900 text-white p-4 md:flex md:justify-center">
+
+    <div class="sm:w-4/5 xl:w-3/5">
+        <h1 class="text-4xl font-bold mt-12 mb-8">Detalhes da Tarefa</h1>
+
+        <div class="border-2 border-zinc-600 rounded-xl p-4">
+            <p class="text-lg mb-4"><strong>Descrição:</strong> {{ task.description }}</p>
+            <p class="text-lg mb-4"><strong>Criado por:</strong> {{ task.user.username }}</p>
+            <p class="text-lg"><strong>Data de criação:</strong> {{ task.creation_date }}</p>
+        </div>
+
+        <a href="/" class="mt-4 inline-block bg-cyan-300 text-black py-2 px-4 rounded-lg font-semibold">
+            Voltar para lista de tarefas
+        </a>
+    </div>
+
 </body>
+
 </html>

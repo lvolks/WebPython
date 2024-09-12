@@ -2,48 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Edit Task</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="w-screen h-screen bg-zinc-900 text-white p-4 sm:flex sm:justify-center">
 
-<form method="post">
-    {% csrf_token %}
+    <div class="sm:w-4/5 xl:w-3/5">
+    <h1 class="text-4xl font-bold mt-12 mb-8">Editar tarefa</h1>
+    <form class="border-2 border-zinc-600 rounded-xl p-4 flex flex-col" method="post">
+        {% csrf_token %}
 
-    {% if error_message %}
-        <p><strong>{{ error_message }}</strong></p>
-    {% endif %}
+        {% if error_message %}
+            <p><strong>{{ error_message }}</strong></p>
+        {% endif %}
 
-    <label>
-        Título da tarefa
-        <input type="text" name="title" value="{{ title }}">
-    </label>
-    <br>
-    <label>
-        Descrição da tarefa
-        <input type="text" name="description" value="{{ description }}">
-    </label>
-    <br>
+        <label class="flex flex-col text-zinc-400 mb-4">
+            Título da tarefa
+            <input autocomplete="false" class="bg-zinc-800 px-4 py-2 rounded-lg" type="text" name="title" value="{{ title }}">
+        </label>
 
-    <label for="status">Status da Tarefa:</label>
-    <select name="status" id="status">
-        <option value="pending" {% if status == 'pending' %}selected{% endif %}>Pendente</option>
-        <option value="doing" {% if status == 'doing' %}selected{% endif %}>Em Andamento</option>
-        <option value="done" {% if status == 'done' %}selected{% endif %}>Finalizado</option>
-    </select>
-    <br>
+        <label class="flex flex-col text-zinc-400 mb-4">
+            Descrição da tarefa
+            <input autocomplete="false" class="bg-zinc-800 px-4 py-2 rounded-lg" type="text" name="description" value="{{ description }}">
+        </label>
 
-    <label for="shared_with">Compartilhar com:</label>
-    <select id="shared_with" name="shared_with" multiple>
-        {% for user in users %}
-            <option value="{{ user.id }}">{{ user.username }}</option>
-        {% endfor %}
-    </select>
-    <br>
-    
-    <button type="submit">
-        Salvar alterações
-    </button>
-</form>
+        <div class="mb-4 flex flex-col">
+            <label class="text-zinc-400" for="status">Status da Tarefa:</label>
+            <select class="bg-zinc-800 px-4 py-2 rounded-lg" name="status" id="status">
+                <option value="pending" {% if status == 'pending' %}selected{% endif %}>Pendente</option>
+                <option value="doing" {% if status == 'doing' %}selected{% endif %}>Em Andamento</option>
+                <option value="done" {% if status == 'done' %}selected{% endif %}>Finalizado</option>
+            </select>
+        </div>
 
+        <div class="flex flex-col">
+            <label for="shared_with">Compartilhar com:</label>
+            <div class="relative">
+                <select class="text-white bg-zinc-800 w-full overflow-y-auto overflow-x-hidden rounded-lg" id="shared_with" name="shared_with" multiple style="max-width: 100%; height: 8rem; display: block; padding: 0.5rem;">
+                    {% for user in users %}
+                        <option class="px-2 py-2" value="{{ user.id }}">{{ user.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="w-full text-end mt-4">
+            <button class="bg-cyan-300 text-black py-2 px-4 rounded-lg font-semibold mt-4 w-full md:w-56" type="submit">
+                Salvar alterações
+            </button>
+        </div>
+    </form>
+</div>
 </body>
 </html>

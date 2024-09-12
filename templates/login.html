@@ -1,31 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-2">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
 
+<body class="w-screen h-screen flex justify-center items-center bg-zinc-900 text-white">
+    <form method="post" class="bg-zinc-950 rounded-lg flex flex-col w-full p-4 h-full justify-center md:w-fit md:h-fit md:p-8 md:rounded-2xl">
+        <h1 class="pb-12 text-4xl font-bold mb-8">Login</h1>
 
-<form method="post">
-    {% if error_message %}
-        <p><strong>{{ error_message }}</strong></p>
-    {% endif %}
-    {% csrf_token %}
-
-    <label>
-        Usuário
-        <input type="text" name="username">
-    </label>
-    <label>
-        Senha
-        <input type="password" name="password">
-    </label>
-
-    <button type="submit">
-        Entrar
-    </button>
-</form>
+        <div class="h-fit">
+            <label>
+                <input type="text" class="px-2 py-2 rounded-lg w-full bg-transparent border-1 border mb-2 md:mb-4 text-xl"
+                    name="username" placeholder="Nome de usuário...">
+            </label>
+            <labeL>
+                <input type="password" class="px-2 py-2 w-full rounded-lg bg-transparent border-1 border text-xl"
+                    name="password" placeholder="Senha">
+            </labeL>
+            
+            
+            {% if error_message %}
+            <p class="w-full text-end text-red-400"><strong>{{ error_message }}</strong></p>
+            {% endif %}
+            {% csrf_token %}
+            
+            <div class="w-full flex justify-center items-center mt-4 mb-8 md:mb-0 md:mt-16 md:justify-between">
+                <div class="w-1/2 text-center md:w-1/4">
+                    <a href="/register" class="text-center w-full text-xl ">Registrar</a>
+                </div>
+                <button type="submit" class="w-1/2 py-2 text-xl bg-cyan-300 rounded-xl my-4 text-black md:w-1/4">
+                    Entrar
+                </button>
+            </div>
+        </div>
+    </form>
 
 </body>
+
 </html>
