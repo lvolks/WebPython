@@ -25,6 +25,7 @@ urlpatterns = [
     # auth
     path('login/',auth.views.login),
     path('register/',auth.views.register),
+    path('logout/',auth.views.customlogout, name="customlogout"),
 
     # boards
     path('',boards.views.index),

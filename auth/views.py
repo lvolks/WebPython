@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.template import loader
 import django.contrib.auth as dauth
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 
 from boards.models import Task
 
@@ -57,3 +59,9 @@ def register(request):
             }, request))
 
     return HttpResponse(template.render({}, request))
+
+def customlogout(request):
+    logout(request)
+    if 'auth_token' in request.session:
+        del request.session['auth_token']
+    return redirect('/login')

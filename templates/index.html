@@ -13,8 +13,7 @@
 <body class="w-screen h-screen bg-zinc-900 text-white p-4">
     <div class="flex items-end mt-12 mb-8">
         <h4 class="text-4xl font-bold">Olá, {{ user.username }}!</h4>
-        <!-- Aqui vai o botão de deslogar -->
-        <button class="ml-4 text-lg" onclick="return confirm('Tem certeza que deseja sair?');"><a href="/login">Sair</a></button>
+        <button class="ml-4 text-lg" onclick="return confirm('Tem certeza que deseja sair?');"><a href="{% url 'customlogout' %}">Sair</a></button>
     </div>
     <div class="">
         <div class="lg:flex lg:width-full lg:justify-between lg:gap-2">
@@ -31,7 +30,6 @@
                             <div class="flex items-center">
                                 <a class="bg-cyan-300 py-1 px-2 rounded-lg text-black font-semibold mr-2"
                                     href="/edittask/{{ task.id }}">Editar</a>
-                                <!-- Botão de deletar -->
                                 <form class="bg-red-500 text-black py-1 px-2 rounded-lg font-semibold" method="post"
                                     action="{% url 'delete_task' task.id %}">
                                     {% csrf_token %}
@@ -65,7 +63,6 @@
                             <div class="flex items-center">
                                 <a class="bg-cyan-300 py-1 px-2 rounded-lg text-black font-semibold mr-2"
                                     href="/edittask/{{ task.id }}">Editar</a>
-                                <!-- Botão de deletar -->
                                 <form class="bg-red-500 text-black py-1 px-2 rounded-lg font-semibold" method="post"
                                     action="{% url 'delete_task' task.id %}">
                                     {% csrf_token %}
@@ -99,7 +96,6 @@
                             <div class="flex items-center">
                                 <a class="bg-cyan-300 py-1 px-2 rounded-lg text-black font-semibold mr-2"
                                     href="/edittask/{{ task.id }}">Editar</a>
-                                <!-- Botão de deletar -->
                                 <form class="bg-red-500 text-black py-1 px-2 rounded-lg font-semibold" method="post"
                                     action="{% url 'delete_task' task.id %}">
                                     {% csrf_token %}
