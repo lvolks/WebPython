@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 from django.template import loader
 import django.contrib.auth as dauth
 
+from boards.models import Task
+
+
 # Create your views here.
 
 def login(request):

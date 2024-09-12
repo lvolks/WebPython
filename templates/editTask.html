@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Task</title>
+</head>
+<body>
+
+<form method="post">
+    {% csrf_token %}
+
+    {% if error_message %}
+        <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
+
+    <label>
+        Título da tarefa
+        <input type="text" name="title" value="{{ title }}">
+    </label>
+    <br>
+    <label>
+        Descrição da tarefa
+        <input type="text" name="description" value="{{ description }}">
+    </label>
+    <br>
+
+    <label for="status">Status da Tarefa:</label>
+    <select name="status" id="status">
+        <option value="pending" {% if status == 'pending' %}selected{% endif %}>Pendente</option>
+        <option value="doing" {% if status == 'doing' %}selected{% endif %}>Em Andamento</option>
+        <option value="done" {% if status == 'done' %}selected{% endif %}>Finalizado</option>
+    </select>
+    <br>
+    
+    <button type="submit">
+        Salvar alterações
+    </button>
+</form>
+
+</body>
+</html>

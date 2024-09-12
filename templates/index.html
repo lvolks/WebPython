@@ -16,18 +16,23 @@
             {% if pending %}
                 <ul>
                     {% for task in pending %}
-                        <li>
+                        <li style="padding-top: 10px">
                             <a href="/tasks/{{ task.id }}">
                                 <strong>{{ task.title }}</strong>
-                                {{ task.user.username }}
                             </a>
                         </li>
-    
+                        <a href="/edittask/{{ task.id }}">Editar Tarefa</a>
+                        <!-- Botão de deletar -->
+                        <form method="post" action="{% url 'delete_task' task.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" onclick="return confirm('Tem certeza que deseja deletar esta tarefa?');">Deletar</button>
+                        </form>
                     {% endfor %}
                 </ul>
             {% else %}
                 <h3>Nenhuma task pendente!</h3>
             {% endif %}
+            <a href="/createtask">Criar Tarefa</a>
         </div>
     
         <div>
