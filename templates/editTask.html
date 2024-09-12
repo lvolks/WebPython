@@ -45,11 +45,11 @@
         </div>
 
         <div class="flex flex-col">
-            <label for="shared_with">Compartilhar com:</label>
+            <label for="shared_with">Responsáveis:</label>
             <div class="relative">
-                <select class=" px-4 py-2 text-white bg-zinc-800 w-full overflow-y-auto overflow-x-hidden rounded-lg" id="shared_with" name="shared_with" style="max-width: 100%; display: block; ">
+                <select class=" px-4 py-2 text-white bg-zinc-800 w-full overflow-y-auto overflow-x-hidden rounded-lg" id="shared_with" name="shared_with" multiple style="max-width: 100%; display: block; ">
                     {% for user in users %}
-                        <option class="px-2 py-2" value="{{ user.id }}">{{ user.username }}</option>
+                        <option class="px-2 py-2" value="{{ user.user.id }}" {% if user.selected %}selected{% endif %}>{{ user.user.username }}</option>
                     {% endfor %}
                 </select>
             </div>

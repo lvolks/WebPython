@@ -14,7 +14,7 @@ def index(request):
         return redirect("/login")
     template = loader.get_template("index.html")
 
-    tasks = Task.objects.filter(Q(user=request.user) | Q(shared_with=request.user))
+    tasks = Task.objects.filter(Q(user=request.user) | Q(shared_with=request.user)).distinct()
 
     pending = tasks.filter(status='pending')
     doing = tasks.filter(status='doing')
@@ -41,9 +41,11 @@ def task(request, task_id):
         task = Task.objects.get(id=task_id)
         status = task_status_enum[task.status]
         status_color = task_status_color[task.status]
+        responsibles = ', '.join(task.shared_with.values_list('username', flat=True))
         return render(request, 'details.html', {
             'task': task,
             'status': status,
+            'responsibles': responsibles,
             'status_color': status_color
         })
     except Task.DoesNotExist:
@@ -149,12 +151,20 @@ def editTask(request, task_id):
         
     try:
         task = Task.objects.get(id=task_id, user=request.user)
+        shared_with = task.shared_with.values_list('id', flat=True)
+        users_list = map(
+            lambda user: {
+                'user': user,
+                'selected': user.id in shared_with
+            },
+            User.objects.exclude(id=request.user.id)
+        )
         return HttpResponse(template.render({
             'title': task.title,
             'description': task.description,
             'status': task.status,
-            'shared_with': task.shared_with.values_list('id', flat=True),
-            'users': User.objects.exclude(id=request.user.id),
+            'shared_with': shared_with,
+            'users': users_list,
             'task_id': task_id
         }, request))
     except Task.DoesNotExist:
