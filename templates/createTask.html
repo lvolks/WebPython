@@ -42,7 +42,7 @@
             <div class="relative">
                 <select class="text-white bg-zinc-800 w-full overflow-y-auto overflow-x-hidden rounded-lg" id="shared_with" name="shared_with" multiple style="max-width: 100%; height: 8rem; display: block; padding: 0.5rem;">
                     {% for user in users %}
-                        <option class="px-2 py-2" value="{{ user.id }}">{{ user.username }}</option>
+                        <option class="px-2 py-2" value="{{ user.id }}">{{ user.first_name }}</option>
                     {% endfor %}
                 </select>
             </div>

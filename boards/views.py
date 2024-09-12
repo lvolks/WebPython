@@ -41,7 +41,7 @@ def task(request, task_id):
         task = Task.objects.get(id=task_id)
         status = task_status_enum[task.status]
         status_color = task_status_color[task.status]
-        responsibles = ', '.join(task.shared_with.values_list('username', flat=True))
+        responsibles = ', '.join(task.shared_with.values_list('first_name', flat=True))
         return render(request, 'details.html', {
             'task': task,
             'status': status,
