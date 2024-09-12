@@ -2,7 +2,7 @@
 
 Trabalho realizado para a disciplina Tópicos Especiais em Software
 
-Integrantes: Matheus Dias e Lucas Volkweis
+Integrantes: Matheus Dias, Lucas Volkweis, Gabriel Rossa
 
 
 # Executar projeto
