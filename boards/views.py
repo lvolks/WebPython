@@ -1,9 +1,10 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template import loader
+from django.contrib.auth.models import User
 
 from boards.models import Task
-
+from django.db.models import Q
 
 # Create your views here.
 
@@ -12,7 +13,7 @@ def index(request):
         return redirect("/login")
     template = loader.get_template("index.html")
 
-    tasks = Task.objects.filter(user=request.user)
+    tasks = Task.objects.filter(Q(user=request.user) | Q(shared_with=request.user))
 
     pending = tasks.filter(status='pending')
     doing = tasks.filter(status='doing')
@@ -40,7 +41,8 @@ def createTask(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         description = request.POST.get('description')
-        status = request.POST.get('status') or 'pending'  # Padrão 'pending' se não for fornecido
+        status = request.POST.get('status') or 'pending'
+        shared_user_ids = request.POST.getlist('shared_with')
 
         if not title or not description:
             return HttpResponse(template.render({
@@ -48,6 +50,7 @@ def createTask(request):
                 'title': title,
                 'description': description,
                 'status': status,
+                'users': User.objects.exclude(id=request.user.id)
             }, request))
 
         existing_task = Task.objects.filter(title=title).exists()
@@ -57,11 +60,16 @@ def createTask(request):
                 'title': title,
                 'description': description,
                 'status': status,
+                'users': User.objects.exclude(id=request.user.id)
             }, request))
 
         try:
-            Task.createTask(title=title, description=description, status=status, user=request.user)
-            print("created")
+            # Cria a tarefa
+            task = Task.createTask(title=title, description=description, status=status, user=request.user)
+            # Converte os IDs dos usuários para instâncias de User
+            shared_users = User.objects.filter(id__in=shared_user_ids)
+            # Define os usuários compartilhados
+            task.shared_with.set(shared_users)
             return redirect("/")
         except Exception as ex:
             print(ex)
@@ -70,9 +78,13 @@ def createTask(request):
                 'title': title,
                 'description': description,
                 'status': status,
+                'users': User.objects.exclude(id=request.user.id)
             }, request))
 
-    return render(request, 'createTask.html')
+    return render(request, 'createTask.html', {
+        'users': User.objects.exclude(id=request.user.id)  # Lista de usuários excluindo o próprio usuário
+    })
+
 
 
 
@@ -83,6 +95,7 @@ def editTask(request, task_id):
         title = request.POST.get('title')
         description = request.POST.get('description')
         status = request.POST.get('status') or 'pending'  # Padrão 'pending' se não for fornecido
+        shared_user_ids = request.POST.getlist('shared_with')  # IDs dos usuários compartilhados
 
         if not title or not description:
             return HttpResponse(template.render({
@@ -90,12 +103,20 @@ def editTask(request, task_id):
                 'title': title,
                 'description': description,
                 'status': status,
+                'users': User.objects.exclude(id=request.user.id),
+                'task_id': task_id  # Para repopular o formulário em caso de erro
             }, request))
 
         try:
             # Edita a task existente com o task_id fornecido
-            Task.editTask(task_id=task_id, title=title, description=description, status=status, user=request.user)
-            print("edited")
+            task = Task.editTask(task_id=task_id, title=title, description=description, status=status, user=request.user)
+            
+            # Converte os IDs dos usuários para instâncias de User
+            shared_users = User.objects.filter(id__in=shared_user_ids)
+            
+            # Define os usuários compartilhados
+            task.shared_with.set(shared_users)
+            
             return redirect("/")
         except ValueError as ex:  # Caso task não seja encontrada
             return HttpResponse(template.render({
@@ -103,6 +124,8 @@ def editTask(request, task_id):
                 'title': title,
                 'description': description,
                 'status': status,
+                'users': User.objects.exclude(id=request.user.id),
+                'task_id': task_id
             }, request))
         except Exception as ex:
             print(ex)
@@ -111,7 +134,24 @@ def editTask(request, task_id):
                 'title': title,
                 'description': description,
                 'status': status,
+                'users': User.objects.exclude(id=request.user.id),
+                'task_id': task_id
             }, request))
+        
+    try:
+        # Pré-popular o formulário com os dados atuais da task (GET)
+        task = Task.objects.get(id=task_id, user=request.user)
+        return HttpResponse(template.render({
+            'title': task.title,
+            'description': task.description,
+            'status': task.status,
+            'shared_with': task.shared_with.values_list('id', flat=True),  # IDs dos usuários com quem a tarefa é compartilhada
+            'users': User.objects.exclude(id=request.user.id),  # Lista de usuários excluindo o próprio usuário
+            'task_id': task_id
+        }, request))
+    except Task.DoesNotExist:
+        return HttpResponse("Task não encontrada", status=404)
+
 
     try:
         # Pré-popular o formulário com os dados atuais da task (GET)
@@ -120,6 +160,7 @@ def editTask(request, task_id):
             'title': task.title,
             'description': task.description,
             'status': task.status,
+            'users': User.objects.exclude(id=request.user.id)
         }, request))
     except Task.DoesNotExist:
         return HttpResponse("Task não encontrada", status=404)

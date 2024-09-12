@@ -30,6 +30,14 @@
         <option value="done" {% if status == 'done' %}selected{% endif %}>Finalizado</option>
     </select>
     <br>
+
+    <label for="shared_with">Compartilhar com:</label>
+    <select id="shared_with" name="shared_with" multiple>
+        {% for user in users %}
+            <option value="{{ user.id }}">{{ user.username }}</option>
+        {% endfor %}
+    </select>
+    <br>
     
     <button type="submit">
         Criar Tarefa

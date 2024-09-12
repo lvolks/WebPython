@@ -8,6 +8,7 @@
     <title>Trelle</title>
 </head>
 <body>
+{% csrf_token %}
 <h4>Olá {{ user.username }}</h4>
     <div>
         <a href="/createtask">Criar Tarefa</a>

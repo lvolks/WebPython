@@ -17,6 +17,7 @@ class Task(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     status = models.CharField(max_length=20, default='pending')
+    shared_with = models.ManyToManyField(User, related_name='shared_tasks', blank=True)
     creation_date = models.DateTimeField(auto_now_add=True)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tasks')
