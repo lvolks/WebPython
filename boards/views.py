@@ -151,19 +151,8 @@ def editTask(request, task_id):
         }, request))
     except Task.DoesNotExist:
         return HttpResponse("Task não encontrada", status=404)
+    
 
-
-    try:
-        # Pré-popular o formulário com os dados atuais da task (GET)
-        task = Task.objects.get(id=task_id, user=request.user)
-        return HttpResponse(template.render({
-            'title': task.title,
-            'description': task.description,
-            'status': task.status,
-            'users': User.objects.exclude(id=request.user.id)
-        }, request))
-    except Task.DoesNotExist:
-        return HttpResponse("Task não encontrada", status=404)
     
 def deleteTask(request, task_id):
     

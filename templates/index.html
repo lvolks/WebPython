@@ -14,7 +14,7 @@
     <div class="flex items-end mt-12 mb-8">
         <h4 class="text-4xl font-bold">Olá, {{ user.username }}!</h4>
         <!-- Aqui vai o botão de deslogar -->
-        <button class="ml-4 text-lg"><u>Sair</u></button>
+        <button class="ml-4 text-lg" onclick="return confirm('Tem certeza que deseja sair?');"><a href="/login">Sair</a></button>
     </div>
     <div class="">
         <div class="lg:flex lg:width-full lg:justify-between lg:gap-2">
