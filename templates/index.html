@@ -10,6 +10,7 @@
 <body>
 <h4>Olá {{ user.username }}</h4>
     <div>
+        <a href="/createtask">Criar Tarefa</a>
     <div style="display: flex; gap: 10px">
         <div>
             <h3>Pendentes</h3>
@@ -32,7 +33,6 @@
             {% else %}
                 <h3>Nenhuma task pendente!</h3>
             {% endif %}
-            <a href="/createtask">Criar Tarefa</a>
         </div>
     
         <div>
@@ -40,13 +40,17 @@
             {% if doing %}
                 <ul>
                     {% for task in doing %}
-                        <li>
+                        <li style="padding-top: 10px">
                             <a href="/tasks/{{ task.id }}">
                                 <strong>{{ task.title }}</strong>
-                                {{ task.user.username }}
                             </a>
                         </li>
-    
+                        <a href="/edittask/{{ task.id }}">Editar Tarefa</a>
+                        <!-- Botão de deletar -->
+                        <form method="post" action="{% url 'delete_task' task.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" onclick="return confirm('Tem certeza que deseja deletar esta tarefa?');">Deletar</button>
+                        </form>
                     {% endfor %}
                 </ul>
             {% else %}
@@ -59,13 +63,17 @@
             {% if done %}
                 <ul>
                     {% for task in done %}
-                        <li>
+                        <li style="padding-top: 10px">
                             <a href="/tasks/{{ task.id }}">
                                 <strong>{{ task.title }}</strong>
-                                {{ task.user.username }}
                             </a>
                         </li>
-    
+                        <a href="/edittask/{{ task.id }}">Editar Tarefa</a>
+                        <!-- Botão de deletar -->
+                        <form method="post" action="{% url 'delete_task' task.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" onclick="return confirm('Tem certeza que deseja deletar esta tarefa?');">Deletar</button>
+                        </form>
                     {% endfor %}
                 </ul>
             {% else %}

@@ -28,7 +28,11 @@ def index(request):
 def task(request, task_id):
     if not request.user.is_authenticated:
         return redirect("/login")
-    print(task_id)
+    try:
+        task = Task.objects.get(id=task_id)
+        return render(request, 'details.html', {'task': task})
+    except Task.DoesNotExist:
+        return HttpResponse("Task não encontrada", status=404)
 
 def createTask(request):
     template = loader.get_template("createTask.html")
@@ -68,7 +72,7 @@ def createTask(request):
                 'status': status,
             }, request))
 
-    return HttpResponse(template.render({}, request))
+    return render(request, 'createTask.html')
 
 
 
@@ -131,5 +135,10 @@ def deleteTask(request, task_id):
         return HttpResponse("Ocorreu um erro ao deletar a task.")
 
 
-    # TODO
+def details(request, task_id):
+    try:
+        task = Task.objects.get(id=task_id)
+        return render(request, 'details.html', {'task': task})
+    except Task.DoesNotExist:
+        return HttpResponse("Task não encontrada", status=404)
 

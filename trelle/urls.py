@@ -28,7 +28,7 @@ urlpatterns = [
 
     # boards
     path('',boards.views.index),
-    path('tasks/<int:task_id>', boards.views.task),
+    path('tasks/<int:task_id>', boards.views.task, name='details'),
 
     path('createtask/', boards.views.createTask),
     path('edittask/<int:task_id>', boards.views.editTask),

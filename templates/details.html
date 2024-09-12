@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tarefa {{ task.id }}</title>
+</head>
+<body>
+    <h1>Detalhes da Tarefa</h1>
+    <p><strong>Descrição:</strong> {{ task.description }}</p>
+    <p><strong>Criado por:</strong> {{ task.user.username }}</p>
+    <p><strong>Data de criação:</strong> {{ task.creation_date }}</p>
+    <a href="/">Voltar para lista de tarefas</a>
+</body>
+</html>
